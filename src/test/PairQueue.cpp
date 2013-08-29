@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <set>
+#include <vector>
 
 namespace {
   class PQConf {
@@ -23,6 +24,8 @@ namespace {
 	  MATHIC_ASSERT(pairString(colB, rowB) == strB);
 	  return strA > strB;
 	}
+    /// why the function called less than?
+    /// because the function addColumnDescending call it
 	bool cmpLessThan(bool v) const {return v;}
 
 	std::string pairString(size_t col, size_t row) const {
@@ -48,7 +51,7 @@ namespace mathic {
 TEST(PairQueue, RetirementSetToFalse) {
   ASSERT_FALSE(mathic::PairQueue<PQConf>::SupportRetirement);
   mathic::PairQueue<PQConf> pq(PQConf(421));
-  mathic::PairQueue<PQConf>::Index* null = 0;
+  mathic::PairQueue<PQConf>::Index* null = nullptr;
   pq.addColumnDescending(null, null);
   ASSERT_FALSE(pq.retired(0));
 }
@@ -114,25 +117,35 @@ TEST(PairQueue, Ordering) {
   // distinguish all pairs and that, according to the pairdata,
   //   (11,0) < (11,10) = (111,0) < (11,5)
   // so the order that pairs are extracted mix up columns 11 and 111.
+  // Index const* rows = nullptr;
+  std::vector<Index> rows;
   for (size_t col = 0; col < 112; ++col) {
-	Index const* begin = 0;
-	Index const* end = 0;
+	Index const* begin = nullptr;
+	Index const* end = nullptr;
 	if (col == 1) {
-	  Index const rows[] = {0};
-	  begin = rows;
-	  end = rows + sizeof(rows) / sizeof(rows[0]);
+	  rows.clear();	  
+	  std:: vector<Index> rTmp{0};
+	  rows = std::move(rTmp);
+	  begin = &rows.front();
+	  end = &(*rows.end());
 	} else if (col == 11) {
-	  Index const rows[] = {0, 10, 5};
-	  begin = rows;
-	  end = rows + sizeof(rows) / sizeof(rows[0]);
+	  rows.clear();	  
+	  std:: vector<Index> rTmp{0, 10, 5};
+	  rows = std::move(rTmp);
+	  begin = &rows.front();
+	  end = &(*rows.end());
 	} else if (col == 13) {
-	  Index const rows[] = {12, 3, 7};
-	  begin = rows;
-	  end = rows + sizeof(rows) / sizeof(rows[0]);
+	  rows.clear();	  
+	  std:: vector<Index> rTmp{12, 3, 7};
+	  rows = std::move(rTmp);
+	  begin = &rows.front();
+	  end = &(*rows.end());
 	} else if (col == 111) {
-	  Index const rows[] = {0, 100};
-	  begin = rows;
-	  end = rows + sizeof(rows) / sizeof(rows[0]);
+	  rows.clear();	  
+	  std:: vector<Index> rTmp{0, 100};
+	  rows = std::move(rTmp);
+	  begin = &rows.front();
+	  end = &(*rows.end());
 	}
 	pq.addColumnDescending(begin, end);
   }
@@ -176,10 +189,11 @@ TEST(PairQueue, Ordering) {
 	  ASSERT_EQ(pd, pq.topPairData());
 	  ASSERT_EQ(p, pq.topPair());
 	}
-
-
+	
+	EXPECT_EQ(pd, pq.topPairData());
+	EXPECT_EQ(p, pq.topPair());
 	//	ASSERT_TRUE(lastPd <= pd);
-	ASSERT_EQ(pq.configuration().pairString(p.first, p.second), pd);
+	EXPECT_EQ(pq.configuration().pairString(p.first, p.second), pd);
 	out << ' ' << pd;
 	pq.pop();
 	lastPd = pd;
