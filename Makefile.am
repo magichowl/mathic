@@ -88,7 +88,7 @@ check_PROGRAMS=$(TESTS)
 unittest_CPPFLAGS = $(DEPS_CFLAGS)
 unittest_CXXFLAGS = -I$(top_srcdir)/src/ -std=gnu++0x
 unittest_LDADD = $(DEPS_LIBS)
-unittest_LDFLAGS= $(top_builddir)/libmathic.la
+unittest_LDFLAGS= $(top_builddir)/libmathic.la -lpthread
 
 test_LIBS=
 unittest_SOURCES=src/test/DivFinder.cpp src/test/gtestInclude.cpp	\

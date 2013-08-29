@@ -344,7 +344,7 @@ namespace mathic {
     }
     return false;
   }
-
+  /// if there is a extEntry (i.e. monomial) in KDEntryArray dividing extMonomial return the position of extEntry, or else return end()  
   template<class C, class EE>
   template<class EM>
   typename KDEntryArray<C, EE>::iterator
@@ -378,7 +378,7 @@ namespace mathic {
       return end();
     }
   }
-
+  /// traversing all monomials dividing extMonomial in KDEntryArray and do the function out.proceed() (e.g., get the sig-polynomial of maximal S/HM-ratio in GB) if one divisor cannot satisfying out.proceed(), return false   
   template<class C, class EE>
   template<class EM, class DO>
   bool KDEntryArray<C, EE>::
@@ -386,7 +386,7 @@ namespace mathic {
     if (C::UseTreeDivMask &&
       C::LeafSize > 1 && // no reason to do it for just 1 leaf
       !getDivMask().canDivide(extMonomial.getDivMask()))
-      return end();
+      return false;
 
     if (C::LeafSize == 1) { // special case for performance
       MATHIC_ASSERT(C::AllowRemovals || !empty());
