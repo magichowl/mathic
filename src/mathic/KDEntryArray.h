@@ -63,6 +63,9 @@ namespace mathic {
     size_t removeMultiples(const EM& monomial, MO& out, const C& conf);
 
     template<class M>
+    inline iterator findElement(const M& monomial, const C& conf);
+
+    template<class M>
     bool removeElement(const M& monomial, const C& conf);
 
     template<class EM>
@@ -322,6 +325,22 @@ namespace mathic {
     } while (newSize < size());
     MATHIC_ASSERT(size() == newSize);
     return removedCount;
+  }
+  
+  template<class C, class EE>
+  template<class M>
+  typename KDEntryArray<C, EE>::iterator
+    KDEntryArray<C, EE>::findElement(const M& monomial, const C& conf){
+    const size_t varCount = conf.getVarCount();
+    const_iterator stop = end();
+    for (iterator it = begin(); it != stop; ++it) {
+      for (size_t var = 0; var < varCount; ++var)
+        if (conf.getExponent(monomial, var) != conf.getExponent(it->get(), var))
+          goto skip;
+      return it;
+    skip:;
+    }
+    return end();
   }
 
   template<class C, class EE>

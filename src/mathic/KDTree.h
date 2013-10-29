@@ -166,6 +166,10 @@ namespace mathic {
       reportChanges(inserted, 0);
     }
 
+    inline Entry* findElement(const Monomial& monomial) {
+      return _tree.findElement(monomial);
+    }
+
     /** Removes an element whose exponents are equal to monomial's. Returns
       if there are no such monomials in the data structure. */
     bool removeElement(const Monomial& monomial) {

@@ -120,6 +120,8 @@ namespace mathic {
     template<class MultipleOutput>
     size_t removeMultiples(const ExtMonoRef& monomial, MultipleOutput& out);
 
+    inline Entry* findElement(const Monomial& monomial);
+
     bool removeElement(const Monomial& monomial);
 
     void insert(const ExtEntry& entry);
@@ -240,6 +242,29 @@ stopped:;
     MATHIC_ASSERT(_tmp.empty());
     MATHIC_ASSERT(debugIsValid());
     return removedCount;
+  }
+
+  template<class C>
+  typename PackedKDTree<C>::Entry* PackedKDTree<C>::findElement(const Monomial& monomial) {
+    MATHIC_ASSERT(_tmp.empty());
+    if (_root == 0)
+      return nullptr;
+    Node* node = _root;
+ 
+    typename Node::iterator child = node->childBegin();
+    while (child != node->childEnd()) {
+      if (node->inChild(child, monomial, _conf)) {
+        node = child->node;
+        child = node->childBegin();
+      } else
+        ++child;
+    }
+    {
+      typename KDEntryArray<C, ExtEntry>::iterator it = node->entries().findElement(monomial, _conf);
+      if (it != node->entries().end())
+      return &it->get();
+    }
+    return nullptr;
   }
 
   template<class C>

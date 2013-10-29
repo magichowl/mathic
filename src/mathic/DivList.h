@@ -81,6 +81,8 @@ namespace mathic {
       bool removeMultiples
       (const Monomial& monomial, MultipleOutput& out);
 
+    Entry* findElement(const Monomial& monomial);
+
     bool removeElement(const Monomial& monomial);
 
     iterator findDivisorIterator(const Monomial& monomial);
@@ -444,6 +446,23 @@ namespace mathic {
   bool DivList<C>::removeMultiples(const Monomial& monomial) {
     DummyMultipleOutput out;
     return removeMultiples(monomial, out);
+  }
+
+  template<class C>
+  typename DivList<C>::Entry*
+  DivList<C>::findElement(const Monomial& monomial) {
+    const size_t varCount = _conf.getVarCount();
+    for (ListIter it = _list.begin(); it != _list.end(); ++it) {
+      for (size_t var = 0; var < varCount; ++var) {
+        if (_conf.getExponent(monomial, var) !=
+          _conf.getExponent(it->get(), var)) {
+          goto skip;
+        }
+      }
+      return &it->get();
+    skip:;
+    }
+    return nullptr;
   }
 
   template<class C>

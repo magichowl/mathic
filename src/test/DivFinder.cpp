@@ -6,5 +6,6 @@
 #include "divsim/KDTreeModel.h"
 
 TEST(DivFinder, NoOp) {
-  KDTreeModel<1,1,1,1,1> model(1, 1, 0, 0, 1.0, 1000);
+  KDTreeModel<1,1,0,1,1> model(1, 1, 0, 0, 1.0, 1000);
+
 };
