@@ -170,6 +170,10 @@ namespace mathic {
       return _tree.findElement(monomial);
     }
 
+    inline const Entry* findElement(const Monomial& monomial) const {
+      return const_cast<KDTree<C>&>(*this).findElement(monomial);
+    }
+
     /** Removes an element whose exponents are equal to monomial's. Returns
       if there are no such monomials in the data structure. */
     bool removeElement(const Monomial& monomial) {

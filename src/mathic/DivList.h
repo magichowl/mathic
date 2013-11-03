@@ -82,6 +82,7 @@ namespace mathic {
       (const Monomial& monomial, MultipleOutput& out);
 
     Entry* findElement(const Monomial& monomial);
+    const Entry* findElement(const Monomial& monomial) const;
 
     bool removeElement(const Monomial& monomial);
 
@@ -463,6 +464,12 @@ namespace mathic {
     skip:;
     }
     return nullptr;
+  }
+
+  template<class C>
+  const typename DivList<C>::Entry*
+  DivList<C>::findElement(const Monomial& monomial) const {
+    return const_cast<DivList<C>&>(*this).findElement(monomial);
   }
 
   template<class C>

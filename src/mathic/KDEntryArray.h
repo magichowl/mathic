@@ -182,6 +182,7 @@ namespace mathic {
       return std::partition(begin, end, cmp);
     }
     MATHIC_ASSERT(false);
+    /* std::abort(); */
     throw std::logic_error("ERROR: Inserted duplicate entry into a KD tree.");
   }
 
@@ -330,7 +331,7 @@ namespace mathic {
   template<class C, class EE>
   template<class M>
   typename KDEntryArray<C, EE>::iterator
-    KDEntryArray<C, EE>::findElement(const M& monomial, const C& conf){
+    KDEntryArray<C, EE>::findElement(const M& monomial, const C& conf) {
     const size_t varCount = conf.getVarCount();
     const_iterator stop = end();
     for (iterator it = begin(); it != stop; ++it) {
