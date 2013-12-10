@@ -4,6 +4,9 @@ AC_INIT([mathic], [1.0]) # package, version, bug-report-email
 # Check that memtailor is installed and locate it
 PKG_CHECK_MODULES([MEMTAILOR], [memtailor])
 
+dnl New versions of Automake require AM_PROG_AR macro but Automake 1.11 doesn't recognize it.
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+
 dnl ----- The gtest dependency
 
 AC_ARG_WITH([gtest], AS_HELP_STRING(
