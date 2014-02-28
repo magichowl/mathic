@@ -2,8 +2,8 @@
 
 namespace mathic {
   unsigned long Timer::getMilliseconds() const {
-    const double floatSpan = clock() - _clocksAtReset;
-    const double floatMilliseconds = 1000 * (floatSpan / CLOCKS_PER_SEC);
+    const double floatMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(Clock::now() - _clocksAtReset).count();
+    // const double floatMilliseconds = 1000 * (floatSpan / CLOCKS_PER_SEC);
     unsigned long milliseconds = static_cast<unsigned long>(floatMilliseconds);
     if (floatMilliseconds - milliseconds >= 0.5)
       ++milliseconds;

@@ -2,7 +2,8 @@
 #define MATHIC_TIMER_GUARD
 
 #include "stdinc.h"
-#include <ctime>
+// the following has higher resolution than #include <ctime>
+#include <chrono>
 #include <cstdio>
 #include <ostream>
 
@@ -14,10 +15,12 @@ namespace mathic {
       then overflow will occur after 71 minutes. */
   class Timer {
   public:
+  typedef typename std::chrono::high_resolution_clock Clock;
+  typedef typename std::chrono::time_point<Clock> Time_point;
     Timer() {reset();}
 
     /** Resets the amount of elapsed CPU time to zero. */
-    void reset() {_clocksAtReset = std::clock();}
+    void reset() {_clocksAtReset = Clock::now();}
 
     /** Returns the number of CPU milliseconds since the last reset.
         See class description for time span overflow limitations. */
@@ -32,7 +35,7 @@ namespace mathic {
     void print(std::ostream& out) const;
 
   private:
-    std::clock_t _clocksAtReset;
+  Time_point _clocksAtReset;
   };
 
   inline std::ostream& operator<<(std::ostream& out, const Timer& timer) {
