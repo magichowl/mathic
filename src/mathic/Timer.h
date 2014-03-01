@@ -15,8 +15,8 @@ namespace mathic {
       then overflow will occur after 71 minutes. */
   class Timer {
   public:
-  typedef typename std::chrono::high_resolution_clock Clock;
-  typedef typename std::chrono::time_point<Clock> Time_point;
+  typedef std::chrono::steady_clock Clock;
+  typedef Clock::time_point Time_point;
     Timer() {reset();}
 
     /** Resets the amount of elapsed CPU time to zero. */
